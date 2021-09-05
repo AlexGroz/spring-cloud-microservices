@@ -17,13 +17,20 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}")
-    public AccountResponseDTO getAccount(@PathVariable Long accountId){
+    public AccountResponseDTO getAccount(@PathVariable Long accountId) {
         return new AccountResponseDTO(accountService.getAccountById(accountId));
     }
 
     @PostMapping("/")
-    public Long createAccount(@RequestBody AccountRequestDTO accountRequestDTO){
+    public Long createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
         return accountService.createAccount(accountRequestDTO.getName(), accountRequestDTO.getEmail(),
                 accountRequestDTO.getPhone(), accountRequestDTO.getBills());
+    }
+
+    @PutMapping("/{accountId}")
+    public AccountResponseDTO updateAccount(@PathVariable Long accountId,
+                                            @RequestBody AccountRequestDTO accountRequestDTO){
+        return new AccountResponseDTO(accountService.updateAccount(accountId, accountRequestDTO.getName(),
+                accountRequestDTO.getEmail(), accountRequestDTO.getPhone(), accountRequestDTO.getBills()));
     }
 }
