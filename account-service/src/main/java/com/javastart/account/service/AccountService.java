@@ -40,6 +40,12 @@ public class AccountService {
         account.setBills(bills);
         return accountRepository.save(account);
     }
+
+    public Account deleteAccount(Long accountId){
+        Account deletedAccount = getAccountById(accountId);
+        accountRepository.deleteById(accountId);
+        return deletedAccount;
+    }
 }
 
 
