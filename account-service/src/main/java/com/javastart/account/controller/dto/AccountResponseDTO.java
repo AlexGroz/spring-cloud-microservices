@@ -1,5 +1,6 @@
 package com.javastart.account.controller.dto;
 
+import com.javastart.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,5 +19,13 @@ public class AccountResponseDTO {
     private  String phone;
 
     private OffsetDateTime creationDate;
+
+    public AccountResponseDTO(Account account){
+        accountId = account.getAccountId();
+        name = account.getName();
+        email = account.getEmail();
+        phone = account.getPhone();
+        creationDate = account.getCreationDate();
+    }
 
 }
