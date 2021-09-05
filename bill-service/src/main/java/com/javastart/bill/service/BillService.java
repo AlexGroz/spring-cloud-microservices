@@ -26,4 +26,10 @@ public class BillService {
         Bill bill = new Bill(accountId, amount, isDefault, OffsetDateTime.now(), overdraftEnabled);
         return billRepository.save(bill).getBillId();
     }
+
+    public Bill updateBill(Long billId, Long accountId, BigDecimal amount, Boolean isDefault, Boolean overdraftEnabled){
+        Bill bill = new Bill(accountId, amount, isDefault, overdraftEnabled);
+        bill.setBillId(billId);
+        return billRepository.save(bill);
+    }
 }
