@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class Account {
@@ -28,4 +27,12 @@ public class Account {
 
     @ElementCollection
     private List<Long> bills;
+
+    public Account(String name, String email, String phone, OffsetDateTime creationDate, List<Long> bills) {K
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.creationDate = creationDate;
+        this.bills = bills;
+    }
 }
