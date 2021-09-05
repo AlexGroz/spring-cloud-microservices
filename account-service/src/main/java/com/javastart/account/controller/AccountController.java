@@ -19,6 +19,6 @@ public class AccountController {
 
     @GetMapping("/{accountId}")
     public AccountResponseDTO getAccount(@PathVariable Long accountId){
-
+        return new AccountResponseDTO(accountService.getAccountById(accountId));
     }
 }

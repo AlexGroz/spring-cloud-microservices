@@ -28,7 +28,7 @@ public class Account {
     @ElementCollection
     private List<Long> bills;
 
-    public Account(String name, String email, String phone, OffsetDateTime creationDate, List<Long> bills) {K
+    public Account(String name, String email, String phone, OffsetDateTime creationDate, List<Long> bills) {
         this.name = name;
         this.email = email;
         this.phone = phone;
