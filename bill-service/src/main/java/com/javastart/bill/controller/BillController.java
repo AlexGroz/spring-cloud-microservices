@@ -17,13 +17,21 @@ public class BillController {
     }
 
     @GetMapping("/{billId}")
-    public BillResponseDTO getBill(@PathVariable Long billId){
+    public BillResponseDTO getBill(@PathVariable Long billId) {
         return new BillResponseDTO(billService.getBillById(billId));
     }
 
     @PostMapping("/")
-    public Long createBill(@RequestBody BillRequestDTO billRequestDTO){
+    public Long createBill(@RequestBody BillRequestDTO billRequestDTO) {
         return billService.createBill(billRequestDTO.getAccountId(), billRequestDTO.getAmount(),
                 billRequestDTO.getIsDefault(), billRequestDTO.getOverdraftEnabled());
+    }
+
+    @PutMapping("/{billId}")
+    public BillResponseDTO updateBill(@PathVariable Long billId,
+                                      @RequestBody BillRequestDTO billRequestDTO) {
+        return new BillResponseDTO(billService.updateBill(billId, billRequestDTO.getAccountId(),
+                billRequestDTO.getAmount(), billRequestDTO.getIsDefault(),
+                billRequestDTO.getOverdraftEnabled()));
     }
 }
