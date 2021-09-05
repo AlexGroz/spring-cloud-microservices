@@ -33,4 +33,9 @@ public class AccountController {
         return new AccountResponseDTO(accountService.updateAccount(accountId, accountRequestDTO.getName(),
                 accountRequestDTO.getEmail(), accountRequestDTO.getPhone(), accountRequestDTO.getBills()));
     }
+
+    @DeleteMapping("/{accountId}")
+    public AccountResponseDTO deleteAccount(@PathVariable Long accountId){
+        return new AccountResponseDTO(accountService.deleteAccount(accountId));
+    }
 }
