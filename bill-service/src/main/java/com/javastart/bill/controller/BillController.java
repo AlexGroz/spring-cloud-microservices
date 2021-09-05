@@ -1,11 +1,10 @@
 package com.javastart.bill.controller;
 
+import com.javastart.bill.controller.dto.BillRequestDTO;
 import com.javastart.bill.controller.dto.BillResponseDTO;
 import com.javastart.bill.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BillController {
@@ -20,5 +19,11 @@ public class BillController {
     @GetMapping("/{billId}")
     public BillResponseDTO getBill(@PathVariable Long billId){
         return new BillResponseDTO(billService.getBillById(billId));
+    }
+
+    @PostMapping("/")
+    public Long createBill(@RequestBody BillRequestDTO billRequestDTO){
+        return billService.createBill(billRequestDTO.getAccountId(), billRequestDTO.getAmount(),
+                billRequestDTO.getIsDefault(), billRequestDTO.getOverdraftEnabled());
     }
 }
