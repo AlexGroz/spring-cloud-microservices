@@ -1,11 +1,10 @@
 package com.javastart.account.controller;
 
+import com.javastart.account.controller.dto.AccountRequestDTO;
 import com.javastart.account.controller.dto.AccountResponseDTO;
 import com.javastart.account.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController {
@@ -20,5 +19,11 @@ public class AccountController {
     @GetMapping("/{accountId}")
     public AccountResponseDTO getAccount(@PathVariable Long accountId){
         return new AccountResponseDTO(accountService.getAccountById(accountId));
+    }
+
+    @PostMapping("/")
+    public Long createAccount(@RequestBody AccountRequestDTO accountRequestDTO){
+        return accountService.createAccount(accountRequestDTO.getName(), accountRequestDTO.getEmail(),
+                accountRequestDTO.getPhone(), accountRequestDTO.getBills());
     }
 }
