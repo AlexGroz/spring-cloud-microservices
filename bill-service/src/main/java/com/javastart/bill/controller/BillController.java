@@ -34,4 +34,9 @@ public class BillController {
                 billRequestDTO.getAmount(), billRequestDTO.getIsDefault(),
                 billRequestDTO.getOverdraftEnabled()));
     }
+
+    @DeleteMapping("/{billId}")
+    public BillResponseDTO deleteBill(@PathVariable Long billId) {
+        return new BillResponseDTO(billService.deleteBill(billId));
+    }
 }
