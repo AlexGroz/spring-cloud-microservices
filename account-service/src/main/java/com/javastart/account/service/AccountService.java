@@ -29,6 +29,17 @@ public class AccountService {
         Account account = new Account(name, email, phone, OffsetDateTime.now(), bills);
         return accountRepository.save(account).getAccountId();
     }
+
+    public Account updateAccount(Long accountId, String name,
+                                 String email, String phone, List<Long> bills){
+        Account account = new Account();
+        account.setAccountId(accountId);
+        account.setName(name);
+        account.setEmail(email);
+        account.setPhone(phone);
+        account.setBills(bills);
+        return accountRepository.save(account);
+    }
 }
 
 
