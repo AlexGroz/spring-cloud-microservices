@@ -32,4 +32,10 @@ public class BillService {
         bill.setBillId(billId);
         return billRepository.save(bill);
     }
+
+    public Bill deleteBill(Long billId){
+        Bill deleteBill = getBillById(billId);
+        billRepository.deleteById(billId);
+        return deleteBill;
+    }
 }
