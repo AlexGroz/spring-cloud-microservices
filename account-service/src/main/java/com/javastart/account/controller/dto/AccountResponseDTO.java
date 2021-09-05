@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -18,6 +19,8 @@ public class AccountResponseDTO {
 
     private  String phone;
 
+    private List<Long> bills;
+
     private OffsetDateTime creationDate;
 
     public AccountResponseDTO(Account account){
@@ -25,6 +28,7 @@ public class AccountResponseDTO {
         name = account.getName();
         email = account.getEmail();
         phone = account.getPhone();
+        bills = account.getBills();
         creationDate = account.getCreationDate();
     }
 
