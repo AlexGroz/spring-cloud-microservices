@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 public class RabbitMQConfig {
 
-    private static final String QUEUE_DEPOSIT = "js.deposit.notify";
+    public static final String QUEUE_DEPOSIT = "js.deposit.notify";
     private static final String TOPIC_EXCHANGE_DEPOSIT = "js.deposit.notify.exchange";
     private static final String ROUTING_KEY_DEPOSIT = "js.key.deposit";
 
