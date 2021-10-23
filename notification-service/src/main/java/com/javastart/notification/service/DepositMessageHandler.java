@@ -6,6 +6,7 @@ import com.javastart.notification.config.RabbitMQConfig;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,18 @@ public class DepositMessageHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         DepositResponseDTO depositResponseDTO = objectMapper.readValue(jsonBody, DepositResponseDTO.class);
         System.out.println(depositResponseDTO);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(depositResponseDTO.getMail());
+        mailMessage.setFrom("lory@cat.xyz");
+
+        mailMessage.setSubject("Deposit");
+        mailMessage.setText("Make deposit, sum:" + depositResponseDTO.getAmount());
+
+        try {
+            javaMailSender.send(mailMessage);
+        } catch (Exception exception){
+            System.out.println(exception);
+        }
     }
 }
