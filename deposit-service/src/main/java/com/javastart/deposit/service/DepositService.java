@@ -37,8 +37,8 @@ public class DepositService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public DepositResponseDTO deposit(Long accountId, Long billId, BigDecimal amount){
-        if (accountId == null && billId == null){
+    public DepositResponseDTO deposit(Long accountId, Long billId, BigDecimal amount) {
+        if (accountId == null && billId == null) {
             throw new DepositServiceException("Account is null and bill is null");
         }
 
@@ -51,22 +51,29 @@ public class DepositService {
             AccountResponseDTO accountResponseDTO = accountServiceClient.getAccountById(billResponseDTO.getAccountId());
             depositRepository.save(new Deposit(amount, billId, OffsetDateTime.now(), accountResponseDTO.getEmail()));
 
-            DepositResponseDTO depositResponseDTO = new DepositResponseDTO(amount, accountResponseDTO.getEmail());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                rabbitTemplate.convertAndSend(TOPIC_EXCHANGE_DEPOSIT, ROUTING_KEY_DEPOSIT, objectMapper.writeValueAsString(depositResponseDTO));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                throw  new DepositServiceException("Can't send message to RabbitMQ");
-            }
-
-            return depositResponseDTO;
+            return createResponse(amount, accountResponseDTO);
         }
 
         BillResponseDTO defaultBill = getDefaultBill(accountId);
         BillRequestDTO billRequestDTO = createBillRequest(amount, defaultBill);
+        billServiceClient.update(defaultBill.getBillId(), billRequestDTO);
+        AccountResponseDTO account = accountServiceClient.getAccountById(accountId);
+        depositRepository.save(new Deposit(amount, defaultBill.getBillId(), OffsetDateTime.now(), account.getEmail()));
+        return createResponse(amount, account);
+    }
 
+    private DepositResponseDTO createResponse(BigDecimal amount, AccountResponseDTO accountResponseDTO) {
+        DepositResponseDTO depositResponseDTO = new DepositResponseDTO(amount, accountResponseDTO.getEmail());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            rabbitTemplate.convertAndSend(TOPIC_EXCHANGE_DEPOSIT, ROUTING_KEY_DEPOSIT, objectMapper.writeValueAsString(depositResponseDTO));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new DepositServiceException("Can't send message to RabbitMQ");
+        }
+
+        return depositResponseDTO;
     }
 
     private BillRequestDTO createBillRequest(BigDecimal amount, BillResponseDTO billResponseDTO) {
@@ -80,7 +87,7 @@ public class DepositService {
     }
 
     private BillResponseDTO getDefaultBill(Long accountId) {
-        return  billServiceClient.getBillsByAccountId(accountId).stream()
+        return billServiceClient.getBillsByAccountId(accountId).stream()
                 .filter(BillResponseDTO::getIsDefault).findAny()
                 .orElseThrow(() -> new DepositServiceException("Unable to find default bill for account: " + accountId));
     }
